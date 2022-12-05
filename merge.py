@@ -49,6 +49,24 @@ def upsample_day(df):
 
 res_day = upsample_day(res_day)
 
+def filter_hours(df):
+    df = df.reset_index()
+    filt = (df['Datetime'].dt.hour >= 7) & (df['Datetime'].dt.hour <= 17)
+
+    df_filtered = df.loc[filt, :]
+
+    return df_filtered
+
+filtered_res_hour = filter_hours(res_hour)
+filtered_res_day = filter_hours(res_day)
+filtered_res_ten = filter_hours(res_ten)
+
+filtered_res_hour.rename(columns={'Price':'Hourly_Price'},inplace=True)
+filtered_res_day.rename(columns={'Price':'Day_Price'},inplace=True)
+filtered_res_ten.rename(columns={'Price':'TenMin_Price'},inplace=True)
+
+see = filtered_res_ten.merge(filtered_res_hour,on='Datetime', how = 'left')
+see2 = see.merge(filtered_res_day,on = 'Datetime', how= 'left')
 
 
 
