@@ -22,34 +22,6 @@ def get_interval(trades_df,day):
     
     return df_interval
 
-def get_product(df,product):
-    product_ohlc = {}
-    product_segments = df.groupby(df['Product'])
-    product_df = product_segments.get_group(product)
-
-    contract_segments = product_df.groupby(product_df['Contract'])
-    contracts = list(set(product_df['Contract'].tolist()))
-
-    for contract in contracts:
-        ohlc =  []
-        contract_df = contract_segments.get_group(contract)
-        all_prices = contract_df['Price'].tolist()
-        high ,low = max(all_prices) , min(all_prices)
-        ohlc.append(contract_df.iloc[0]['Price']) #open
-        ohlc.append(high)
-        ohlc.append(low)
-        ohlc.append(contract_df.iloc[len(contract_df)-1]['Price']) #close
-
-        product_ohlc[contract] = ohlc
-
-    # open = product_df.iloc[0]['Price']
-    # close = product_df.iloc[len(product_df)-1]['Price']
-    # all_prices = product_df['Price'].tolist()
-    # high ,low = max(all_prices) , min(all_prices)
-
-    return product_ohlc
-
-# TODO for each contract return ohlc
 
 def main_func(df,day,product,freq,begin=7,end=17):
     """Args: df: original trades df,
