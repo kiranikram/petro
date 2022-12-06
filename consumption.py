@@ -1,5 +1,9 @@
 import pandas as pd
 from datetime import datetime
+import seaborn as sns 
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 cons = pd.read_csv("data/Consumption.csv")
 
@@ -40,5 +44,27 @@ for year in years:
 
     consumption_df = consumption_df.merge(yearly_df,on='DayMonth',how='left')
 
-consumption_df.drop(columns=['Date','Consumption','Year'],axis=1,inplace=True)
+consumption_df = consumption_df.set_index(consumption_df['DayMonth'])
+
+consumption_df.drop(columns=['Date','Consumption','Year','DayMonth'],axis=1,inplace=True)
 consumption_df = consumption_df[0:366]
+
+consumption_df['Min16-20'] = consumption_df[['2016','2017','2018','2019','2020']].min(axis=1)
+consumption_df['Max16-20'] = consumption_df[['2016','2017','2018','2019','2020']].max(axis=1)
+consumption_df['Avg16-20'] = consumption_df[['2016','2017','2018','2019','2020']].mean(axis=1)
+
+
+
+
+fig, ax = plt.subplots(1, figsize=[14,4])
+
+
+ax.fill_between(consumption_df.index, consumption_df["Min16-20"], consumption_df["Max16-20"], label="5y range", facecolor="oldlace")
+ax.plot(consumption_df.index, consumption_df['2021'], label="2021", c="b")
+ax.plot(consumption_df.index, consumption_df['2022'], label="2022", c="g")
+ax.plot(consumption_df.index, consumption_df['Avg16-20'], label="Avg16-20", c="m")
+
+
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+ax.legend(loc = 'best')
