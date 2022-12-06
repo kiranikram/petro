@@ -35,8 +35,8 @@ def resample_two_hours(df,way):
 
     return df
 
-res_ten = resample_two_hours(res_ten)
-res_hour = resample_two_hours(res_hour)
+res_ten = resample_two_hours(res_ten,'mean_val')
+res_hour = resample_two_hours(res_hour,'mean_val')
 
 def upsample_day(df):
     df = df.drop('Resolution',axis=1)
@@ -68,3 +68,4 @@ final_df = filt_df.merge(filtered_res_day,on = 'Datetime', how= 'left')
 
 
 
+final_df.to_csv("data/new_merged.csv")
