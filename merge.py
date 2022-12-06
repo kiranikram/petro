@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.impute import KNNImputer
+
 merge = pd.read_csv("data/merge.csv")
 
 #Datetime 
@@ -13,9 +13,6 @@ res_ten = segments.get_group('10MIN')
 res_hour = segments.get_group('1H')
 res_day = segments.get_group('D')
 
-#TODO use KNN Imputer
-# ten_imputer = KNNImputer(n_neighbors=5)
-# res_ten = pd.DataFrame(ten_imputer.fit_transform(res_ten),columns ='Price')
 
 def fill_na_mean(df):
     mean_value = df['Price'].mean()
@@ -65,8 +62,8 @@ filtered_res_hour.rename(columns={'Price':'Hourly_Price'},inplace=True)
 filtered_res_day.rename(columns={'Price':'Day_Price'},inplace=True)
 filtered_res_ten.rename(columns={'Price':'TenMin_Price'},inplace=True)
 
-see = filtered_res_ten.merge(filtered_res_hour,on='Datetime', how = 'left')
-see2 = see.merge(filtered_res_day,on = 'Datetime', how= 'left')
+filt_df = filtered_res_ten.merge(filtered_res_hour,on='Datetime', how = 'left')
+final_df = filt_df.merge(filtered_res_day,on = 'Datetime', how= 'left')
 
 
 

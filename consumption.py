@@ -54,8 +54,7 @@ consumption_df['Max16-20'] = consumption_df[['2016','2017','2018','2019','2020']
 consumption_df['Avg16-20'] = consumption_df[['2016','2017','2018','2019','2020']].mean(axis=1)
 
 
-
-
+#PLOTTING
 fig, ax = plt.subplots(1, figsize=[14,4])
 
 
@@ -68,3 +67,4 @@ ax.plot(consumption_df.index, consumption_df['Avg16-20'], label="Avg16-20", c="m
 ax.xaxis.set_major_locator(mdates.MonthLocator())
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
 ax.legend(loc = 'best')
+
